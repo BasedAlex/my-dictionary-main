@@ -1,38 +1,39 @@
 import React, { useState } from 'react'
+import { PartOfSpeech } from '../types'
 
-const data = [
-	{
-		id: 1,
-		word: 'Freedom',
-		part: 'adjective',
-		meaning: 'the quality of state of being free: such as',
-	},
-	{
-		id: 2,
-		word: 'Free',
-		part: 'adjective',
-		meaning: 'not costing or charging anything',
-	},
-	{
-		id: 3,
-		word: 'Frequency',
-		part: 'noun',
-		meaning: 'the fact or condition of occuring frequently',
-	},
-]
+type Props = {
+	words: [WordsType]
+}
 
-const List = () => {
+type WordsType = {
+	word: string
+	id: number
+	partOfSpeech: PartOfSpeech
+	def: [DefinitionType]
+}
+
+type DefinitionType = {
+	definition: string
+}
+
+const List = ({ words }: Props) => {
 	const [favorites, setFavorites] = useState(false)
+	console.log('words', words)
 	return (
 		<div className='mt-6 w-5/6 mr-20'>
-			{data.map(item => {
+			{words.map((item: WordsType) => {
 				return (
 					<div key={item.id} className='flex gap-2 justify-between'>
 						<div className='flex gap-2'>
 							<button>X</button>
 							<h3 className='font-bold'>{item.word}</h3>
-							<h3 className='italic'>{item.part}</h3>
-							<h3>{item.meaning}</h3>
+							<h3 className='italic'>{item.partOfSpeech}</h3>
+							<h3>{item.def[0].definition}</h3>
+							{/* {item.def.map((definition: any) => {
+								return (
+									<h3 key={definition.definition}>{definition.definition}</h3>
+								)
+							})} */}
 						</div>
 						<svg
 							width='28px'
