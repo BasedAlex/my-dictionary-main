@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
-const Head = () => {
-	const [favorites, setFavorites] = useState(false)
-
+const Head = ({ setSwitch, turn }: any) => {
 	return (
 		<>
 			<div className='flex justify-between items-center bg-blue-400 text-white px-6 mx-20 h-10 text-xl font-medium rounded-md	'>
-				<h3 className=''>Word Keeper</h3>
+				<h3 className='' onClick={() => setSwitch('regular')}>
+					Word Keeper
+				</h3>
 				<div className='flex justify-between items-center'>
 					<svg
 						width='28px'
@@ -15,8 +15,10 @@ const Head = () => {
 						fill='white'
 						xmlns='http://www.w3.org/2000/svg'
 						stroke='#ffffff'
-						className='hover:fill-blue-600 active:fill-blue-600'
-						onClick={() => setFavorites(!favorites)}
+						className={`${
+							turn === 'favorites' ? 'fill-blue-600' : 'fill-white'
+						}`}
+						onClick={() => setSwitch('favorites')}
 					>
 						<g id='SVGRepo_bgCarrier' strokeWidth='0' />
 
@@ -44,11 +46,6 @@ const Head = () => {
 					<h3 className=''>Starred words</h3>
 				</div>
 			</div>
-			{favorites && (
-				<div className='px-6 mx-20 text-2xl font-medium text-black'>
-					Starred Words
-				</div>
-			)}
 		</>
 	)
 }

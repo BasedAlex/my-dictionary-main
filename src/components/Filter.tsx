@@ -1,12 +1,14 @@
 import React from 'react'
+import { PartOfSpeech } from '../types'
 
 type Props = {
 	setTypeWord: any
 	setSearchWord: any
 	value: string
+	typeWord: PartOfSpeech
 }
 
-const filter = ({ setTypeWord, setSearchWord, value }: Props) => {
+const filter = ({ setTypeWord, setSearchWord, value, typeWord }: Props) => {
 	return (
 		<div className='mx-20 w-1/6 bg-gray-300 px-6 py-2 rounded-md mt-8'>
 			<div>
@@ -34,6 +36,7 @@ const filter = ({ setTypeWord, setSearchWord, value }: Props) => {
 						type='radio'
 						value='adjective'
 						name='radiobuttons'
+						checked={typeWord === 'adjective'}
 						className='default:ring-3 checked:bg-blue-500'
 					/>{' '}
 					adjective
@@ -43,6 +46,7 @@ const filter = ({ setTypeWord, setSearchWord, value }: Props) => {
 						type='radio'
 						value='verb'
 						name='radiobuttons'
+						checked={typeWord === 'verb'}
 						className='default:ring-3 checked:bg-blue-500'
 					/>{' '}
 					verb
@@ -52,6 +56,7 @@ const filter = ({ setTypeWord, setSearchWord, value }: Props) => {
 						type='radio'
 						value='noun'
 						name='radiobuttons'
+						checked={typeWord === 'noun'}
 						className='default:ring-3 checked:bg-blue-500'
 					/>{' '}
 					noun

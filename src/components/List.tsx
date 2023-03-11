@@ -1,47 +1,25 @@
-import { useState } from 'react'
-import { PartOfSpeech } from '../types'
+import { useEffect, useState } from 'react'
+import { ListItem, PartOfSpeech, WordsType } from '../types'
+import { getList, getPages } from '../utils'
 
 type Props = {
-	words: [WordsType]
+	list: ListItem[]
+	setFavorites: any
 }
 
-type WordsType = {
-	word: string
-	id: number
-	partOfSpeech: PartOfSpeech
-	def: [DefinitionType]
-}
+const List = ({ list, setFavorites }: Props) => {
+	const [pages, setPages] = useState<ListItem[][]>([[]])
+	const [pageNumber, setPageNumber] = useState(0)
 
-type DefinitionType = {
-	definition: string
-}
+	useEffect(() => {
+		setPages(getPages(list))
+	}, [list])
 
-type ListItem = DefinitionType & Pick<WordsType, 'partOfSpeech' | 'word' | 'id'>
-
-const List = ({ words }: Props) => {
-	const [favorites, setFavorites] = useState(false)
-
-	const list = words.reduce(
-		(acc: ListItem[], { word, partOfSpeech, def, id }: WordsType) => {
-			let defenitions: ListItem[] = []
-			if (Array.isArray(def)) {
-				defenitions = def.map((d, index) => ({
-					definition: d.definition,
-					word,
-					partOfSpeech,
-					id: id + index,
-				}))
-			}
-			acc.push(...defenitions)
-			return acc
-		},
-		[]
-	)
 	return (
 		<div className='mt-6 w-5/6 mr-20'>
-			{list.map((item: ListItem) => {
+			{(pages[pageNumber] ?? []).map((item: ListItem, index) => {
 				return (
-					<div key={item.id} className='flex gap-2 justify-between'>
+					<div key={index} className='flex gap-2 justify-between'>
 						<div className='flex gap-2'>
 							<button>X</button>
 							<h3 className='font-bold'>{item.word}</h3>
@@ -55,8 +33,8 @@ const List = ({ words }: Props) => {
 							fill='white'
 							xmlns='http://www.w3.org/2000/svg'
 							stroke='#0000FF'
-							className='hover:fill-blue-600 active:fill-blue-600'
-							onClick={() => setFavorites(!favorites)}
+							className={`${item.isFavorite ? 'fill-blue-600' : 'fill-white'}`}
+							onClick={() => setFavorites(item)}
 						>
 							<g id='SVGRepo_bgCarrier' strokeWidth='0' />
 
@@ -84,6 +62,18 @@ const List = ({ words }: Props) => {
 					</div>
 				)
 			})}
+			<div>
+				{pages.map((_, index) => {
+					return (
+						<button
+							className='mr-2 text-lg active::font-bold'
+							onClick={() => setPageNumber(index)}
+						>
+							{index + 1}
+						</button>
+					)
+				})}
+			</div>
 		</div>
 	)
 }
