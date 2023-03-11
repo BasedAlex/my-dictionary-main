@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { PartOfSpeech } from '../types'
 
 type Props = {
@@ -16,24 +16,37 @@ type DefinitionType = {
 	definition: string
 }
 
+type ListItem = DefinitionType & Pick<WordsType, 'partOfSpeech' | 'word' | 'id'>
+
 const List = ({ words }: Props) => {
 	const [favorites, setFavorites] = useState(false)
-	console.log('words', words)
+
+	const list = words.reduce(
+		(acc: ListItem[], { word, partOfSpeech, def, id }: WordsType) => {
+			let defenitions: ListItem[] = []
+			if (Array.isArray(def)) {
+				defenitions = def.map((d, index) => ({
+					definition: d.definition,
+					word,
+					partOfSpeech,
+					id: id + index,
+				}))
+			}
+			acc.push(...defenitions)
+			return acc
+		},
+		[]
+	)
 	return (
 		<div className='mt-6 w-5/6 mr-20'>
-			{words.map((item: WordsType) => {
+			{list.map((item: ListItem) => {
 				return (
 					<div key={item.id} className='flex gap-2 justify-between'>
 						<div className='flex gap-2'>
 							<button>X</button>
 							<h3 className='font-bold'>{item.word}</h3>
 							<h3 className='italic'>{item.partOfSpeech}</h3>
-							<h3>{item.def[0].definition}</h3>
-							{/* {item.def.map((definition: any) => {
-								return (
-									<h3 key={definition.definition}>{definition.definition}</h3>
-								)
-							})} */}
+							<h3>{item.definition}</h3>
 						</div>
 						<svg
 							width='28px'
