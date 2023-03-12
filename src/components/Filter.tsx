@@ -5,16 +5,17 @@ type Props = {
 	setTypeWord: any
 	setSearchWord: any
 	value: string
-	typeWord: PartOfSpeech
+	typeWord: PartOfSpeech | null
 }
 
 const filter = ({ setTypeWord, setSearchWord, value, typeWord }: Props) => {
 	return (
-		<div className='mx-20 w-1/6 bg-gray-300 px-6 py-2 rounded-md mt-8'>
+		<div className='mx-20 w-1/6 bg-gray-300 px-6 py-2 rounded-md mt-8 h-36 max-h-36'>
 			<div>
 				<input
 					type='text'
 					value={value}
+					placeholder='Search Words...'
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setSearchWord(e.currentTarget.value)
 					}

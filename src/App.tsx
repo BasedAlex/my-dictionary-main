@@ -3,13 +3,18 @@ import Head from './components/Head'
 import Filter from './components/Filter'
 import List from './components/List'
 import { ListItem, PartOfSpeech, SwitchType } from './types'
-import { getList, hasFavorite } from './utils'
+import {
+	getFavoritesStorage,
+	getList,
+	hasFavorite,
+	setFavoritesStorage,
+} from './utils'
 
 const PUBLIC_API_URL = `https://api.dictionaryapi.dev/api/v2/entries/en`
 
 function App() {
 	const [searchWord, setSearchWord] = useState('')
-	const [typeWord, setTypeWord] = useState<PartOfSpeech>(PartOfSpeech.noun)
+	const [typeWord, setTypeWord] = useState<PartOfSpeech | null>(null)
 	const [words, setWords] = useState([])
 	const [favorites, setFavorites] = useState<ListItem[]>([])
 	const [turn, setSwitch] = useState<SwitchType>('regular')
@@ -26,6 +31,7 @@ function App() {
 					word: item.word,
 					partOfSpeech: item.meanings[0].partOfSpeech,
 					def: item.meanings[0].definitions,
+					phonetic: item.phonetic,
 				}))
 		}
 	}
@@ -33,7 +39,7 @@ function App() {
 	const onSwitch = (value: SwitchType) => {
 		if (value === 'favorites') {
 			setSearchWord('')
-			setTypeWord(PartOfSpeech.noun)
+			setTypeWord(null)
 		}
 
 		setSwitch(value)
@@ -48,9 +54,14 @@ function App() {
 
 	const onSetFavorites = (item: ListItem) => {
 		if (hasFavorite(favorites, item.definition)) {
-			setFavorites(prev => prev.filter(p => p.definition !== item.definition))
+			const newFavorites = favorites.filter(
+				p => p.definition !== item.definition
+			)
+			setFavorites(newFavorites)
+			setFavoritesStorage(newFavorites)
 		} else {
 			setFavorites([...favorites, { ...item, isFavorite: true }])
+			setFavoritesStorage([...favorites, { ...item, isFavorite: true }])
 		}
 	}
 
@@ -62,10 +73,14 @@ function App() {
 				.then(response => response.json())
 				.then(response => {
 					setWords(response)
-					console.log('response', response)
 				})
 		}
 	}, [searchWord])
+
+	useEffect(() => {
+		const listFavorite = getFavoritesStorage()
+		setFavorites(listFavorite)
+	}, [])
 
 	return (
 		<div>

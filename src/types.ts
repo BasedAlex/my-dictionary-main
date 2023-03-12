@@ -8,6 +8,7 @@ export type WordsType = {
 	word: string
 	partOfSpeech: PartOfSpeech
 	def: DefinitionType[]
+	phonetic: string
 }
 
 export type DefinitionType = {
@@ -15,6 +16,7 @@ export type DefinitionType = {
 	isFavorite: boolean
 }
 
-export type ListItem = DefinitionType & Pick<WordsType, 'partOfSpeech' | 'word'>
+export type ListItem = DefinitionType &
+	Pick<WordsType, 'partOfSpeech' | 'word' | 'phonetic'>
 
 export type SwitchType = 'favorites' | 'regular'
