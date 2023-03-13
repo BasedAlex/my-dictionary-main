@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react';
 import { ListItem } from '../types';
 import { getPages } from '../utils';
 import Phonetic from './Phonetic';
+import React from 'react';
 
 type Props = {
   list: ListItem[];
-  setFavorites: any;
+  setFavorites: (item: ListItem) => void;
 };
 
 const List = ({ list, setFavorites }: Props) => {
   const [pages, setPages] = useState<ListItem[][]>([[]]);
   const [pageNumber, setPageNumber] = useState(0);
+
+  console.log(pages);
 
   useEffect(() => {
     setPages(getPages(list));
@@ -20,7 +23,7 @@ const List = ({ list, setFavorites }: Props) => {
     <div className="mt-6 w-5/6 mr-20">
       {(pages[pageNumber] ?? []).map((item: ListItem, index) => {
         return (
-          <div key={index} className="flex gap-2 justify-between">
+          <div draggable={true} key={index} className="flex gap-2 justify-between">
             <div className="flex gap-2">
               <Phonetic item={item} />
             </div>
@@ -62,6 +65,7 @@ const List = ({ list, setFavorites }: Props) => {
               return (
                 <button
                   className="mr-2 text-lg active::font-bold"
+                  key={index}
                   onClick={() => setPageNumber(index)}
                 >
                   {index + 1}

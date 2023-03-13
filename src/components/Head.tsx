@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Head = ({ setSwitch, turn }: any) => {
   return (
     <>

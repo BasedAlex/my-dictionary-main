@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ListItem } from '../types';
 import './Phonetic.css';
+import React from 'react';
 
 type Props = {
   item: ListItem;
@@ -27,9 +28,9 @@ const Phonetic = ({ item }: Props) => {
             strokeWidth="0.198"
             className="mt-1"
           >
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+            <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
 
             <g id="SVGRepo_iconCarrier">
               {' '}
